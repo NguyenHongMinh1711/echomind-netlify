@@ -1,8 +1,18 @@
-// Fix for image loading issues
+// EchoMind Image Loading Fix
+// This script handles image loading issues and provides fallbacks
+
 document.addEventListener('DOMContentLoaded', function() {
+  console.log('EchoMind image fix loaded');
+
   // Create fallback images
-  const fallbackResourceImage = '/assets/fallback-resource.svg';
-  const fallbackProfileImage = '/assets/fallback-profile.svg';
+  const fallbackResourceImage = createDataUrl('#3f51b5', 'Resource Image');
+  const fallbackProfileImage = createDataUrl('#f50057', 'Profile Image');
+  const fallbackGenericImage = createDataUrl('#00bcd4', 'Image Not Available');
+
+  // Store fallbacks in localStorage for persistence
+  localStorage.setItem('echomind_fallback_resource', fallbackResourceImage);
+  localStorage.setItem('echomind_fallback_profile', fallbackProfileImage);
+  localStorage.setItem('echomind_fallback_generic', fallbackGenericImage);
 
   // Create a MutationObserver to watch for new images
   const observer = new MutationObserver(function(mutations) {
@@ -26,80 +36,110 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // Add error handler to existing images
-  document.querySelectorAll('img').forEach(addErrorHandler);
+  setTimeout(function() {
+    document.querySelectorAll('img').forEach(addErrorHandler);
+    console.log('Added error handlers to', document.querySelectorAll('img').length, 'images');
+  }, 500);
 
   // Function to add error handler to an image
   function addErrorHandler(img) {
-    img.addEventListener('error', function() {
-      // Check if the image is already using a fallback
-      if (!this.src.includes('fallback') && !this.src.includes('placeholder')) {
-        console.log('Image failed to load, using fallback:', this.src);
+    // Skip if already processed
+    if (img.dataset.fallbackAdded) return;
 
-        // Set fallback image based on context
-        if (this.closest('[class*="resource"], [class*="Resource"]')) {
-          this.src = fallbackResourceImage;
-        } else if (this.closest('[class*="profile"], [class*="Profile"], [class*="avatar"], [class*="Avatar"]')) {
-          this.src = fallbackProfileImage;
-        } else {
-          // Create a data URL for a colored rectangle with text
-          const canvas = document.createElement('canvas');
-          canvas.width = this.width || 300;
-          canvas.height = this.height || 200;
+    // Mark as processed
+    img.dataset.fallbackAdded = 'true';
 
-          const ctx = canvas.getContext('2d');
-          ctx.fillStyle = '#3f51b5';
-          ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // Add error handler
+    img.addEventListener('error', function(e) {
+      // Prevent infinite loops
+      if (this.dataset.usingFallback === 'true') return;
 
-          ctx.fillStyle = '#ffffff';
-          ctx.font = '16px Arial';
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'middle';
-          ctx.fillText('Image Not Available', canvas.width / 2, canvas.height / 2);
+      // Mark as using fallback
+      this.dataset.usingFallback = 'true';
 
-          this.src = canvas.toDataURL('image/png');
-        }
+      console.log('Image failed to load, using fallback:', this.src);
 
-        // Add a class to indicate this is a fallback image
-        this.classList.add('fallback-image');
+      // Determine image type from context
+      let fallbackSrc;
+
+      if (this.closest('[class*="resource"], [class*="Resource"]') ||
+          this.src.includes('unsplash') ||
+          this.src.includes('resource')) {
+        fallbackSrc = localStorage.getItem('echomind_fallback_resource');
+      } else if (this.closest('[class*="profile"], [class*="Profile"], [class*="avatar"], [class*="Avatar"]') ||
+                this.src.includes('profile') ||
+                this.src.includes('avatar')) {
+        fallbackSrc = localStorage.getItem('echomind_fallback_profile');
+      } else {
+        fallbackSrc = localStorage.getItem('echomind_fallback_generic');
       }
+
+      // Set fallback image
+      this.src = fallbackSrc;
+
+      // Add fallback class for styling
+      this.classList.add('fallback-image');
+    });
+
+    // Force error check for already loaded images
+    if (img.complete) {
+      if (!img.naturalWidth) {
+        img.dispatchEvent(new Event('error'));
+      }
+    }
+  }
+
+  // Function to create a data URL for a fallback image
+  function createDataUrl(color, text) {
+    const canvas = document.createElement('canvas');
+    canvas.width = 300;
+    canvas.height = 200;
+
+    const ctx = canvas.getContext('2d');
+
+    // Background
+    ctx.fillStyle = color;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Text
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 20px Arial, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+
+    return canvas.toDataURL('image/png');
+  }
+
+  // Fix for resources page images
+  function fixResourceImages() {
+    const resourceImages = document.querySelectorAll('[class*="resource"] img, [class*="Resource"] img');
+    console.log('Found', resourceImages.length, 'resource images to check');
+
+    resourceImages.forEach(img => {
+      // Add CORS attributes
+      img.crossOrigin = 'anonymous';
+
+      // Add specific error handler for resource images
+      img.addEventListener('error', function() {
+        if (this.dataset.resourceFixed) return;
+        this.dataset.resourceFixed = 'true';
+
+        // Try with a proxy if it's an external URL
+        if (this.src.includes('unsplash.com') || this.src.includes('images.')) {
+          const originalSrc = this.src;
+          console.log('Trying proxy for resource image:', originalSrc);
+
+          // Use a CORS proxy
+          this.src = 'https://images.weserv.nl/?url=' + encodeURIComponent(originalSrc);
+        }
+      });
     });
   }
 
-  // Create fallback images if they don't exist
-  function createFallbackImage(path, color, text) {
-    const img = new Image();
-    img.src = path;
+  // Run resource image fix periodically
+  setInterval(fixResourceImages, 2000);
 
-    img.onerror = function() {
-      const canvas = document.createElement('canvas');
-      canvas.width = 300;
-      canvas.height = 200;
-
-      const ctx = canvas.getContext('2d');
-      ctx.fillStyle = color;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.fillStyle = '#ffffff';
-      ctx.font = '20px Arial';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(text, canvas.width / 2, canvas.height / 2);
-
-      const dataUrl = canvas.toDataURL('image/png');
-
-      // Create a link element to download the image
-      const link = document.createElement('link');
-      link.rel = 'preload';
-      link.href = dataUrl;
-      link.as = 'image';
-      document.head.appendChild(link);
-
-      // Store the URL in localStorage
-      localStorage.setItem(path, dataUrl);
-    };
-  }
-
-  // Create the fallback images
-  createFallbackImage(fallbackResourceImage, '#3f51b5', 'Resource Image');
-  createFallbackImage(fallbackProfileImage, '#f50057', 'Profile Image');
+  // Initial run
+  setTimeout(fixResourceImages, 1000);
 });

@@ -1,4 +1,7 @@
-// Global API key definition to ensure it's available everywhere
+// EchoMind Environment Configuration
+// This file provides environment variables for the application
+
+// Define the Mistral API key directly as a global variable
 window.MISTRAL_API_KEY = "05HuhddoS0bpO42IaPDvXiWizFtnbP6N";
 
 // For backward compatibility
@@ -27,7 +30,45 @@ window.ENV_CONFIG = {
   APP_ENV: "production"
 };
 
-// Add a global function to get the Mistral API key
+// Add global functions to get environment variables
+window.getEnv = function(key, defaultValue) {
+  // Try all possible locations
+  return (
+    // First check window.ENV_CONFIG
+    (window.ENV_CONFIG && window.ENV_CONFIG[key]) ||
+    // Then check window.ENV
+    (window.ENV && window.ENV[key]) ||
+    // Then check window.ENV with VITE_ prefix
+    (window.ENV && window.ENV[`VITE_${key}`]) ||
+    // Then check direct global variables
+    window[key] ||
+    // Finally return default value
+    defaultValue
+  );
+};
+
+// Specific getter for Mistral API key
 window.getMistralApiKey = function() {
   return window.MISTRAL_API_KEY;
 };
+
+// Add a global function to validate API keys
+window.validateApiKey = function(apiKey) {
+  // Simple validation - check if it's a non-empty string
+  return typeof apiKey === 'string' && apiKey.length > 0;
+};
+
+// Initialize default user settings in localStorage
+if (!localStorage.getItem('echomind_user_settings')) {
+  localStorage.setItem('echomind_user_settings', JSON.stringify({
+    use_custom_api_key: false,
+    mistral_api_key: window.MISTRAL_API_KEY,
+    email_notifications: true,
+    reminder_notifications: true
+  }));
+}
+
+// Log environment configuration for debugging
+console.log('EchoMind environment configuration loaded');
+console.log('Supabase URL:', window.getEnv('SUPABASE_URL'));
+console.log('Mistral API Key available:', !!window.getEnv('MISTRAL_API_KEY'));
