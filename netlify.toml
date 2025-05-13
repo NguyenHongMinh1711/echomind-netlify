@@ -1,6 +1,6 @@
 [build]
   publish = "dist"
-  command = "echo 'No build needed, using pre-built files'"
+  command = "npm run netlify:fix"
 
 [dev]
   command = "npm run dev"
@@ -9,7 +9,13 @@
   publish = "dist"
   autoLaunch = true
 
-# Redirect all routes to index.html for SPA routing
+# Redirect root to netlify entry for Netlify environment
+[[redirects]]
+  from = "/"
+  to = "/netlify-entry.html"
+  status = 200
+
+# Redirect all other routes to index.html for SPA routing
 [[redirects]]
   from = "/*"
   to = "/index.html"

@@ -22,7 +22,8 @@
     "verify:rls": "node verify-rls.js",
     "security:audit": "node security-audit.js",
     "analyze": "vite-bundle-analyzer",
-    "deploy": "npm run build && npm run serve"
+    "deploy": "npm run build && npm run serve",
+    "netlify:fix": "node netlify-fix.js"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",

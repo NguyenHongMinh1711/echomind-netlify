@@ -205,10 +205,41 @@ These fixes have been tested and verified to resolve the following issues:
 - `/dist/index.html` (added standalone version link)
 - `/dist/direct.html` (created new file)
 
+## Netlify Build Plugin Approach - May 14, 2025
+
+### 1. Custom Netlify Build Plugin
+
+**Problem:** Previous fixes were not being properly applied during the Netlify build process.
+
+**Solution:**
+- Created a custom Netlify build plugin (netlify-fix.js) that runs during deployment
+- Implemented automatic file modifications during the build process
+- Added direct creation of Netlify-specific files
+- Created a completely separate entry point for Netlify
+
+**Files Added:**
+- `/netlify-fix.js` (build plugin)
+- `/dist/netlify-entry.html` (Netlify-specific entry point)
+
+### 2. Direct Netlify Redirects
+
+**Problem:** Netlify routing was not properly handling the application.
+
+**Solution:**
+- Updated _redirects file to prioritize the Netlify-specific entry point
+- Modified netlify.toml to use our custom build plugin
+- Added direct root path handling for Netlify
+- Implemented automatic redirection to the Netlify-specific entry point
+
+**Files Modified:**
+- `/dist/_redirects`
+- `/netlify.toml`
+- `/package.json` (added netlify:fix script)
+
 ## Next Steps
 
-1. Monitor usage of the standalone version
-2. Consider implementing a more comprehensive standalone version with additional features
+1. Monitor the Netlify deployment with the custom build plugin
+2. Consider implementing a more comprehensive Netlify-specific version
 3. Investigate the root causes of the Netlify-specific issues
-4. Develop a long-term solution that integrates the standalone version's reliability with the full application's features
-5. Add analytics to track which version users are accessing
+4. Develop a long-term solution that properly integrates with Netlify's build process
+5. Add analytics to track user experience on Netlify

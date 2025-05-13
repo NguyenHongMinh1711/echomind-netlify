@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EchoMind - Mental Well-being Platform</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+    }
+    .app {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .header {
+      background-color: #3f51b5;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .content {
+      display: flex;
+      margin-top: 20px;
+    }
+    .sidebar {
+      width: 250px;
+      background-color: white;
+      padding: 20px;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .main {
+      flex: 1;
+      margin-left: 20px;
+      background-color: white;
+      padding: 20px;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .nav-item {
+      display: block;
+      padding: 10px;
+      margin-bottom: 5px;
+      color: #333;
+      text-decoration: none;
+      border-radius: 4px;
+    }
+    .nav-item:hover {
+      background-color: #f0f0f0;
+    }
+    .nav-item.active {
+      background-color: #e8eaf6;
+      color: #3f51b5;
+      font-weight: bold;
+    }
+    .resources {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .card {
+      background-color: white;
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .card-image {
+      height: 200px;
+      overflow: hidden;
+    }
+    .card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .card-content {
+      padding: 15px;
+    }
+    .card-title {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+    .card-description {
+      color: #666;
+      margin-bottom: 15px;
+    }
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      margin-bottom: 15px;
+    }
+    .tag {
+      background-color: #e8eaf6;
+      color: #3f51b5;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      margin-right: 5px;
+      margin-bottom: 5px;
+    }
+    .card-actions {
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid #eee;
+      padding-top: 15px;
+    }
+    .button {
+      background-color: #3f51b5;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .button-outline {
+      background-color: transparent;
+      color: #3f51b5;
+      border: 1px solid #3f51b5;
+    }
+    h1, h2, h3 {
+      color: #3f51b5;
+    }
+    @media (max-width: 768px) {
+      .content {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        margin-bottom: 20px;
+      }
+      .main {
+        margin-left: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">EchoMind</div>
+  </div>
+  
+  <div class="app">
+    <div class="content">
+      <div class="sidebar">
+        <a href="#" class="nav-item active">Dashboard</a>
+        <a href="#" class="nav-item">Journal</a>
+        <a href="#" class="nav-item">Chat</a>
+        <a href="#" class="nav-item">Resources</a>
+        <a href="#" class="nav-item">Daily Prompts</a>
+        <a href="#" class="nav-item">Settings</a>
+      </div>
+      
+      <div class="main">
+        <h1>Resources</h1>
+        <p>Access a library of mental health resources curated to support your well-being journey.</p>
+        
+        <div class="resources">
+          <!-- Resource 1 -->
+          <div class="card">
+            <div class="card-image">
+              <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef" alt="Understanding Depression">
+            </div>
+            <div class="card-content">
+              <h3 class="card-title">Understanding Depression</h3>
+              <p class="card-description">A comprehensive guide to understanding depression, its causes, symptoms, and treatment options.</p>
+              <div class="card-tags">
+                <span class="tag">depression</span>
+                <span class="tag">mental health</span>
+                <span class="tag">education</span>
+              </div>
+              <div class="card-actions">
+                <a href="https://www.nimh.nih.gov/health/topics/depression" target="_blank" class="button">Open</a>
+                <button class="button button-outline">Favorite</button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Resource 2 -->
+          <div class="card">
+            <div class="card-image">
+              <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773" alt="Mindfulness Meditation for Anxiety">
+            </div>
+            <div class="card-content">
+              <h3 class="card-title">Mindfulness Meditation for Anxiety</h3>
+              <p class="card-description">Learn how mindfulness meditation can help reduce anxiety and improve mental well-being.</p>
+              <div class="card-tags">
+                <span class="tag">anxiety</span>
+                <span class="tag">meditation</span>
+                <span class="tag">mindfulness</span>
+              </div>
+              <div class="card-actions">
+                <a href="https://www.youtube.com/watch?v=O-6f5wQXSu8" target="_blank" class="button">Open</a>
+                <button class="button button-outline">Favorite</button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Resource 3 -->
+          <div class="card">
+            <div class="card-image">
+              <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f" alt="The Upward Spiral">
+            </div>
+            <div class="card-content">
+              <h3 class="card-title">The Upward Spiral</h3>
+              <p class="card-description">Using neuroscience to reverse the course of depression, one small change at a time.</p>
+              <div class="card-tags">
+                <span class="tag">depression</span>
+                <span class="tag">neuroscience</span>
+                <span class="tag">self-help</span>
+              </div>
+              <div class="card-actions">
+                <a href="https://www.amazon.com/Upward-Spiral-Neuroscience-Reverse-Depression/dp/1626251207" target="_blank" class="button">Open</a>
+                <button class="button button-outline">Favorite</button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Resource 4 -->
+          <div class="card">
+            <div class="card-image">
+              <img src="https://images.unsplash.com/photo-1516387938699-a93567ec168e" alt="Crisis Text Line">
+            </div>
+            <div class="card-content">
+              <h3 class="card-title">Crisis Text Line</h3>
+              <p class="card-description">Free, 24/7 mental health support via text message.</p>
+              <div class="card-tags">
+                <span class="tag">crisis</span>
+                <span class="tag">support</span>
+                <span class="tag">helpline</span>
+              </div>
+              <div class="card-actions">
+                <a href="https://www.crisistextline.org/" target="_blank" class="button">Open</a>
+                <button class="button button-outline">Favorite</button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Resource 5 -->
+          <div class="card">
+            <div class="card-image">
+              <img src="https://images.unsplash.com/photo-1577563908411-5077b6dc7624" alt="EchoMind Community Chat">
+            </div>
+            <div class="card-content">
+              <h3 class="card-title">EchoMind Community Chat</h3>
+              <p class="card-description">Join our Telegram group chat to connect with other EchoMind users for support and discussion.</p>
+              <div class="card-tags">
+                <span class="tag">community</span>
+                <span class="tag">support</span>
+                <span class="tag">chat</span>
+                <span class="tag">telegram</span>
+              </div>
+              <div class="card-actions">
+                <a href="https://t.me/+R4EEKgf_R585NGI9" target="_blank" class="button">Open</a>
+                <button class="button button-outline">Favorite</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
