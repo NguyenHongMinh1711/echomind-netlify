@@ -1,92 +1,25 @@
-// Netlify Build Plugin to fix deployment issues
+// Netlify Build Plugin to fix deployment issues (CommonJS version)
 // This script runs during the Netlify build process
 
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+const fs = require('fs');
+const path = require('path');
 
-// Get the directory name properly in ES modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// Main plugin function
-export default {
-  onPreBuild: ({ utils }) => {
-    console.log('Running Netlify fix plugin...');
-
-    try {
-      // Create a netlify.toml file with proper configuration
-      createNetlifyConfig();
-
-      // Create a _redirects file with proper rules
-      createRedirectsFile();
-
-      // Fix the index.html file
-      fixIndexHtml();
-
-      // Create a Netlify-specific entry point
-      createNetlifyEntry();
-
-      console.log('Netlify fix plugin completed successfully');
-    } catch (error) {
-      utils.build.failBuild('Netlify fix plugin failed: ' + error.message);
-    }
+// Main function to run the fix
+function runNetlifyFix() {
+  console.log('Running Netlify fix plugin (CommonJS version)...');
+  
+  try {
+    // Create a netlify-entry.html file with the resources
+    createNetlifyEntry();
+    
+    // Create a _redirects file
+    createRedirectsFile();
+    
+    console.log('Netlify fix completed successfully');
+  } catch (error) {
+    console.error('Netlify fix failed:', error);
+    process.exit(1);
   }
-};
-
-// Function to create a proper netlify.toml file
-function createNetlifyConfig() {
-  const netlifyConfig = `
-[build]
-  publish = "dist"
-  command = "echo 'No build needed, using pre-built files'"
-
-# Redirect all routes to index.html for SPA routing
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-
-# Special redirect for Netlify-specific issues
-[[redirects]]
-  from = "/netlify-entry"
-  to = "/netlify-entry.html"
-  status = 200
-
-# Set security headers
-[[headers]]
-  for = "/*"
-  [headers.values]
-    X-Frame-Options = "DENY"
-    X-XSS-Protection = "1; mode=block"
-    X-Content-Type-Options = "nosniff"
-    Referrer-Policy = "strict-origin-when-cross-origin"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self'; connect-src 'self' https://*.supabase.co https://*.mistral.ai https://images.unsplash.com https://images.weserv.nl; frame-src 'self'; object-src 'none'; base-uri 'self';"
-    Permissions-Policy = "camera=(), microphone=(), geolocation=(), interest-cohort=()"
-
-# Don't cache HTML files
-[[headers]]
-  for = "/*.html"
-  [headers.values]
-    Cache-Control = "public, max-age=0, must-revalidate"
-
-# Don't cache JS fix files
-[[headers]]
-  for = "/*-fix.js"
-  [headers.values]
-    Cache-Control = "public, max-age=0, must-revalidate"
-
-# Environment variable configuration
-[context.production.environment]
-  VITE_APP_ENV = "production"
-  VITE_SUPABASE_URL = "https://anpmiebatvfzfexxzobr.supabase.co"
-  VITE_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFucG1pZWJhdHZmemZleHh6b2JyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDcwMTA2OTUsImV4cCI6MjA2MjU4NjY5NX0.G698WEjcHwl8fSx_oYNaf4oFnE-RHFJCcyZiZl13JTQ"
-  VITE_MISTRAL_API_KEY = "05HuhddoS0bpO42IaPDvXiWizFtnbP6N"
-  VITE_DEFAULT_MISTRAL_API_KEY = "05HuhddoS0bpO42IaPDvXiWizFtnbP6N"
-`;
-
-  fs.writeFileSync(path.resolve(__dirname, 'netlify.toml'), netlifyConfig);
-  console.log('Created netlify.toml file');
 }
 
 // Function to create a _redirects file
@@ -103,40 +36,9 @@ function createRedirectsFile() {
   if (!fs.existsSync(distDir)) {
     fs.mkdirSync(distDir, { recursive: true });
   }
-
+  
   fs.writeFileSync(path.join(distDir, '_redirects'), redirectsContent);
   console.log('Created _redirects file');
-}
-
-// Function to fix the index.html file
-function fixIndexHtml() {
-  const indexPath = path.resolve(__dirname, 'dist', 'index.html');
-
-  // Check if the file exists
-  if (!fs.existsSync(indexPath)) {
-    console.log('Warning: index.html not found at', indexPath);
-    return;
-  }
-
-  let indexContent = fs.readFileSync(indexPath, 'utf8');
-
-  // Add a meta refresh as a fallback
-  const metaRefresh = '<meta http-equiv="refresh" content="0;url=/netlify-entry.html">';
-  indexContent = indexContent.replace('</head>', `${metaRefresh}\n</head>`);
-
-  // Add a script to redirect to netlify-entry.html
-  const redirectScript = `
-  <script>
-    // Redirect to netlify-entry.html for Netlify environment
-    if (window.location.hostname.includes('netlify.app')) {
-      window.location.href = '/netlify-entry.html';
-    }
-  </script>
-  `;
-  indexContent = indexContent.replace('</head>', `${redirectScript}\n</head>`);
-
-  fs.writeFileSync(indexPath, indexContent);
-  console.log('Fixed index.html file');
 }
 
 // Function to create a Netlify-specific entry point
@@ -293,7 +195,7 @@ function createNetlifyEntry() {
   <div class="header">
     <div class="logo">EchoMind</div>
   </div>
-
+  
   <div class="app">
     <div class="content">
       <div class="sidebar">
@@ -304,11 +206,11 @@ function createNetlifyEntry() {
         <a href="#" class="nav-item">Daily Prompts</a>
         <a href="#" class="nav-item">Settings</a>
       </div>
-
+      
       <div class="main">
         <h1>Resources</h1>
         <p>Access a library of mental health resources curated to support your well-being journey.</p>
-
+        
         <div class="resources">
           <!-- Resource 1 -->
           <div class="card">
@@ -329,7 +231,7 @@ function createNetlifyEntry() {
               </div>
             </div>
           </div>
-
+          
           <!-- Resource 2 -->
           <div class="card">
             <div class="card-image">
@@ -349,7 +251,7 @@ function createNetlifyEntry() {
               </div>
             </div>
           </div>
-
+          
           <!-- Resource 3 -->
           <div class="card">
             <div class="card-image">
@@ -369,7 +271,7 @@ function createNetlifyEntry() {
               </div>
             </div>
           </div>
-
+          
           <!-- Resource 4 -->
           <div class="card">
             <div class="card-image">
@@ -389,7 +291,7 @@ function createNetlifyEntry() {
               </div>
             </div>
           </div>
-
+          
           <!-- Resource 5 -->
           <div class="card">
             <div class="card-image">
@@ -417,12 +319,15 @@ function createNetlifyEntry() {
 </body>
 </html>
   `;
-
+  
   const distDir = path.resolve(__dirname, 'dist');
   if (!fs.existsSync(distDir)) {
     fs.mkdirSync(distDir, { recursive: true });
   }
-
+  
   fs.writeFileSync(path.join(distDir, 'netlify-entry.html'), netlifyEntryContent);
   console.log('Created netlify-entry.html file');
 }
+
+// Run the fix
+runNetlifyFix();

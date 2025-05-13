@@ -23,7 +23,7 @@
     "security:audit": "node security-audit.js",
     "analyze": "vite-bundle-analyzer",
     "deploy": "npm run build && npm run serve",
-    "netlify:fix": "node netlify-fix.js"
+    "netlify:fix": "node netlify-fix.cjs"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
