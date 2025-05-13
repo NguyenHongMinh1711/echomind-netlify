@@ -63,5 +63,24 @@
   <body>
     <div id="root"></div>
     <noscript>You need to enable JavaScript to run this app.</noscript>
+
+    <!-- Standalone version link -->
+    <div id="standalone-link" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; display: none;">
+      <a href="/direct.html" style="display: block; background-color: #3f51b5; color: white; text-decoration: none; padding: 10px 15px; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); font-family: Arial, sans-serif; font-size: 14px;">
+        Use Standalone Version
+      </a>
+    </div>
+
+    <script>
+      // Show the standalone link after a delay
+      setTimeout(function() {
+        document.getElementById('standalone-link').style.display = 'block';
+      }, 3000);
+
+      // If we're on Netlify, show it immediately
+      if (window.location.hostname.includes('netlify.app')) {
+        document.getElementById('standalone-link').style.display = 'block';
+      }
+    </script>
   </body>
 </html>

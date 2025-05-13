@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EchoMind - Standalone Version</title>
+  <style>
+    /* Reset and base styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f5f5f5;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .header {
+      background-color: #3f51b5;
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .nav {
+      display: flex;
+    }
+    .nav-item {
+      color: white;
+      text-decoration: none;
+      padding: 8px 15px;
+      margin-left: 5px;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+    }
+    .nav-item:hover {
+      background-color: rgba(255,255,255,0.1);
+    }
+    .main {
+      display: flex;
+      margin-top: 20px;
+    }
+    .sidebar {
+      width: 250px;
+      background-color: white;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      padding: 20px;
+      margin-right: 20px;
+    }
+    .sidebar-item {
+      display: block;
+      padding: 10px 15px;
+      margin-bottom: 5px;
+      color: #333;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+    }
+    .sidebar-item:hover {
+      background-color: #f0f0f0;
+    }
+    .sidebar-item.active {
+      background-color: #e8eaf6;
+      color: #3f51b5;
+      font-weight: bold;
+    }
+    .content {
+      flex: 1;
+      background-color: white;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      padding: 20px;
+    }
+    .section {
+      margin-bottom: 30px;
+    }
+    .section-title {
+      font-size: 20px;
+      margin-bottom: 15px;
+      color: #3f51b5;
+    }
+    .card {
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      overflow: hidden;
+      margin-bottom: 20px;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .card-image {
+      height: 200px;
+      background-color: #3f51b5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 18px;
+    }
+    .card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .card-content {
+      padding: 15px;
+    }
+    .card-title {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+    .card-description {
+      color: #666;
+      margin-bottom: 15px;
+    }
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      margin-bottom: 15px;
+    }
+    .tag {
+      background-color: #e8eaf6;
+      color: #3f51b5;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      margin-right: 5px;
+      margin-bottom: 5px;
+    }
+    .card-actions {
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid #eee;
+      padding-top: 15px;
+    }
+    .button {
+      background-color: #3f51b5;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .button:hover {
+      background-color: #303f9f;
+    }
+    .button-outline {
+      background-color: transparent;
+      color: #3f51b5;
+      border: 1px solid #3f51b5;
+    }
+    .button-outline:hover {
+      background-color: #e8eaf6;
+    }
+    .resources-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .login-form {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .form-label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    .form-input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    .form-button {
+      width: 100%;
+      padding: 12px;
+      background-color: #3f51b5;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .form-button:hover {
+      background-color: #303f9f;
+    }
+    .alert {
+      padding: 15px;
+      border-radius: 4px;
+      margin-bottom: 15px;
+    }
+    .alert-success {
+      background-color: #e8f5e9;
+      color: #2e7d32;
+    }
+    .alert-error {
+      background-color: #ffebee;
+      color: #c62828;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">EchoMind</div>
+    <div class="nav">
+      <a href="#" class="nav-item login-link">Login</a>
+      <a href="#" class="nav-item signup-link">Sign Up</a>
+    </div>
+  </div>
+  
+  <div class="container">
+    <div class="main">
+      <div class="sidebar">
+        <a href="#dashboard" class="sidebar-item active" data-page="dashboard">Dashboard</a>
+        <a href="#journal" class="sidebar-item" data-page="journal">Journal</a>
+        <a href="#chat" class="sidebar-item" data-page="chat">Chat</a>
+        <a href="#resources" class="sidebar-item" data-page="resources">Resources</a>
+        <a href="#prompts" class="sidebar-item" data-page="prompts">Daily Prompts</a>
+        <a href="#settings" class="sidebar-item" data-page="settings">Settings</a>
+      </div>
+      
+      <div class="content">
+        <!-- Dashboard Page -->
+        <div class="page" id="dashboard-page">
+          <h1 class="section-title">Dashboard</h1>
+          <div class="section">
+            <p>Welcome to EchoMind, your mental well-being platform.</p>
+            <p>This is a standalone version that works without requiring authentication or backend connectivity.</p>
+          </div>
+        </div>
+        
+        <!-- Resources Page -->
+        <div class="page hidden" id="resources-page">
+          <h1 class="section-title">Resources</h1>
+          <div class="section">
+            <p>Access a library of mental health resources curated to support your well-being journey.</p>
+            
+            <div class="resources-grid">
+              <!-- Resource 1 -->
+              <div class="card">
+                <div class="card-image">
+                  <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef" alt="Understanding Depression">
+                </div>
+                <div class="card-content">
+                  <h3 class="card-title">Understanding Depression</h3>
+                  <p class="card-description">A comprehensive guide to understanding depression, its causes, symptoms, and treatment options.</p>
+                  <div class="card-tags">
+                    <span class="tag">depression</span>
+                    <span class="tag">mental health</span>
+                    <span class="tag">education</span>
+                  </div>
+                  <div class="card-actions">
+                    <a href="https://www.nimh.nih.gov/health/topics/depression" target="_blank" class="button">Open</a>
+                    <button class="button button-outline">Favorite</button>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Resource 2 -->
+              <div class="card">
+                <div class="card-image">
+                  <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773" alt="Mindfulness Meditation for Anxiety">
+                </div>
+                <div class="card-content">
+                  <h3 class="card-title">Mindfulness Meditation for Anxiety</h3>
+                  <p class="card-description">Learn how mindfulness meditation can help reduce anxiety and improve mental well-being.</p>
+                  <div class="card-tags">
+                    <span class="tag">anxiety</span>
+                    <span class="tag">meditation</span>
+                    <span class="tag">mindfulness</span>
+                  </div>
+                  <div class="card-actions">
+                    <a href="https://www.youtube.com/watch?v=O-6f5wQXSu8" target="_blank" class="button">Open</a>
+                    <button class="button button-outline">Favorite</button>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Resource 3 -->
+              <div class="card">
+                <div class="card-image">
+                  <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f" alt="The Upward Spiral">
+                </div>
+                <div class="card-content">
+                  <h3 class="card-title">The Upward Spiral</h3>
+                  <p class="card-description">Using neuroscience to reverse the course of depression, one small change at a time.</p>
+                  <div class="card-tags">
+                    <span class="tag">depression</span>
+                    <span class="tag">neuroscience</span>
+                    <span class="tag">self-help</span>
+                  </div>
+                  <div class="card-actions">
+                    <a href="https://www.amazon.com/Upward-Spiral-Neuroscience-Reverse-Depression/dp/1626251207" target="_blank" class="button">Open</a>
+                    <button class="button button-outline">Favorite</button>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Resource 4 -->
+              <div class="card">
+                <div class="card-image">
+                  <img src="https://images.unsplash.com/photo-1516387938699-a93567ec168e" alt="Crisis Text Line">
+                </div>
+                <div class="card-content">
+                  <h3 class="card-title">Crisis Text Line</h3>
+                  <p class="card-description">Free, 24/7 mental health support via text message.</p>
+                  <div class="card-tags">
+                    <span class="tag">crisis</span>
+                    <span class="tag">support</span>
+                    <span class="tag">helpline</span>
+                  </div>
+                  <div class="card-actions">
+                    <a href="https://www.crisistextline.org/" target="_blank" class="button">Open</a>
+                    <button class="button button-outline">Favorite</button>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Resource 5 -->
+              <div class="card">
+                <div class="card-image">
+                  <img src="https://images.unsplash.com/photo-1577563908411-5077b6dc7624" alt="EchoMind Community Chat">
+                </div>
+                <div class="card-content">
+                  <h3 class="card-title">EchoMind Community Chat</h3>
+                  <p class="card-description">Join our Telegram group chat to connect with other EchoMind users for support and discussion.</p>
+                  <div class="card-tags">
+                    <span class="tag">community</span>
+                    <span class="tag">support</span>
+                    <span class="tag">chat</span>
+                    <span class="tag">telegram</span>
+                  </div>
+                  <div class="card-actions">
+                    <a href="https://t.me/+R4EEKgf_R585NGI9" target="_blank" class="button">Open</a>
+                    <button class="button button-outline">Favorite</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Login Page -->
+        <div class="page hidden" id="login-page">
+          <h1 class="section-title">Login</h1>
+          <div class="login-form">
+            <div class="alert alert-success hidden" id="login-success">
+              Login successful! Redirecting to dashboard...
+            </div>
+            <div class="alert alert-error hidden" id="login-error">
+              Invalid login credentials. Please try again.
+            </div>
+            <form id="login-form">
+              <div class="form-group">
+                <label class="form-label" for="login-email">Email</label>
+                <input type="email" id="login-email" class="form-input" placeholder="Enter your email" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="login-password">Password</label>
+                <input type="password" id="login-password" class="form-input" placeholder="Enter your password" required>
+              </div>
+              <button type="submit" class="form-button">Login</button>
+            </form>
+            <p style="margin-top: 15px; text-align: center;">
+              Don't have an account? <a href="#" class="signup-link">Sign up</a>
+            </p>
+          </div>
+        </div>
+        
+        <!-- Signup Page -->
+        <div class="page hidden" id="signup-page">
+          <h1 class="section-title">Sign Up</h1>
+          <div class="login-form">
+            <div class="alert alert-success hidden" id="signup-success">
+              Account created successfully! Redirecting to dashboard...
+            </div>
+            <div class="alert alert-error hidden" id="signup-error">
+              Error creating account. Please try again.
+            </div>
+            <form id="signup-form">
+              <div class="form-group">
+                <label class="form-label" for="signup-email">Email</label>
+                <input type="email" id="signup-email" class="form-input" placeholder="Enter your email" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="signup-password">Password</label>
+                <input type="password" id="signup-password" class="form-input" placeholder="Enter your password" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="signup-confirm-password">Confirm Password</label>
+                <input type="password" id="signup-confirm-password" class="form-input" placeholder="Confirm your password" required>
+              </div>
+              <button type="submit" class="form-button">Sign Up</button>
+            </form>
+            <p style="margin-top: 15px; text-align: center;">
+              Already have an account? <a href="#" class="login-link">Login</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // Simple page navigation
+    document.addEventListener('DOMContentLoaded', function() {
+      // Get all pages
+      const pages = document.querySelectorAll('.page');
+      const sidebarItems = document.querySelectorAll('.sidebar-item');
+      
+      // Function to show a specific page
+      function showPage(pageId) {
+        // Hide all pages
+        pages.forEach(page => page.classList.add('hidden'));
+        
+        // Show the selected page
+        const selectedPage = document.getElementById(pageId + '-page');
+        if (selectedPage) {
+          selectedPage.classList.remove('hidden');
+        }
+        
+        // Update sidebar active state
+        sidebarItems.forEach(item => {
+          if (item.dataset.page === pageId) {
+            item.classList.add('active');
+          } else {
+            item.classList.remove('active');
+          }
+        });
+      }
+      
+      // Add click event to sidebar items
+      sidebarItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+          e.preventDefault();
+          showPage(this.dataset.page);
+        });
+      });
+      
+      // Handle login and signup links
+      const loginLinks = document.querySelectorAll('.login-link');
+      const signupLinks = document.querySelectorAll('.signup-link');
+      
+      loginLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          showPage('login');
+        });
+      });
+      
+      signupLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          showPage('signup');
+        });
+      });
+      
+      // Handle form submissions
+      const loginForm = document.getElementById('login-form');
+      const signupForm = document.getElementById('signup-form');
+      
+      loginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Show success message
+        document.getElementById('login-success').classList.remove('hidden');
+        document.getElementById('login-error').classList.add('hidden');
+        
+        // Create mock authentication
+        const email = document.getElementById('login-email').value;
+        createAuthSession(email);
+        
+        // Redirect to dashboard after a delay
+        setTimeout(function() {
+          showPage('dashboard');
+        }, 1500);
+      });
+      
+      signupForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Show success message
+        document.getElementById('signup-success').classList.remove('hidden');
+        document.getElementById('signup-error').classList.add('hidden');
+        
+        // Create mock authentication
+        const email = document.getElementById('signup-email').value;
+        createAuthSession(email);
+        
+        // Redirect to dashboard after a delay
+        setTimeout(function() {
+          showPage('dashboard');
+        }, 1500);
+      });
+      
+      // Function to create authentication session
+      function createAuthSession(email) {
+        // Create a user ID
+        const userId = 'standalone-user-' + Date.now();
+        
+        // Create a mock user
+        const mockUser = {
+          id: userId,
+          email: email || 'standalone@example.com',
+          created_at: new Date().toISOString()
+        };
+        
+        // Store in localStorage
+        localStorage.setItem('echomind_user', JSON.stringify(mockUser));
+        localStorage.setItem('supabase.auth.token', JSON.stringify({
+          currentSession: {
+            access_token: 'standalone-token-' + Date.now(),
+            refresh_token: 'standalone-refresh-' + Date.now(),
+            expires_at: new Date(Date.now() + 86400000).toISOString(),
+            user: mockUser
+          }
+        }));
+        
+        // Create default user settings
+        localStorage.setItem('echomind_user_settings', JSON.stringify({
+          use_custom_api_key: false,
+          mistral_api_key: "05HuhddoS0bpO42IaPDvXiWizFtnbP6N",
+          email_notifications: true,
+          reminder_notifications: true
+        }));
+      }
+      
+      // Check if user is already logged in
+      const authToken = localStorage.getItem('supabase.auth.token');
+      if (authToken && JSON.parse(authToken).currentSession) {
+        // Show dashboard
+        showPage('dashboard');
+      } else {
+        // Show login page
+        showPage('login');
+      }
+    });
+  </script>
+</body>
+</html>
