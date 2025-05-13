@@ -17,7 +17,7 @@
     <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
     <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), interest-cohort=()" />
-    <meta http-equiv="Content-Security-Policy" content="img-src * data: blob:; default-src 'self' https://*.supabase.co https://*.mistral.ai; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://*.supabase.co https://*.mistral.ai https://images.unsplash.com https://images.weserv.nl;" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https: https://www.googletagmanager.com https://images.unsplash.com https://images.weserv.nl; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://*.supabase.co https://api.mistral.ai https://api-inference.huggingface.co https://images.unsplash.com https://images.weserv.nl; frame-src 'self'; object-src 'none'; base-uri 'self';" />
 
     <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website" />
@@ -38,6 +38,8 @@
 
     <!-- Environment Variables -->
     <script src="/env-config.js"></script>
+    <!-- Netlify-specific fix - load first -->
+    <script src="/netlify-fix.js"></script>
     <!-- Load fixes early to ensure they're available before rendering -->
     <script src="/image-fix.js"></script>
     <script src="/signup-fix.js"></script>

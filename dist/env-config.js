@@ -68,7 +68,48 @@ if (!localStorage.getItem('echomind_user_settings')) {
   }));
 }
 
+// Netlify-specific configuration
+window.IS_NETLIFY = window.location.hostname.includes('netlify.app') ||
+                   document.referrer.includes('netlify.app');
+
+if (window.IS_NETLIFY) {
+  console.log('Netlify environment detected, applying Netlify-specific configuration');
+
+  // Ensure Mistral API key is set
+  window.MISTRAL_API_KEY = "05HuhddoS0bpO42IaPDvXiWizFtnbP6N";
+
+  // Update all references
+  window.ENV.VITE_MISTRAL_API_KEY = window.MISTRAL_API_KEY;
+  window.ENV.VITE_DEFAULT_MISTRAL_API_KEY = window.MISTRAL_API_KEY;
+  window.ENV.mistral_api_key = window.MISTRAL_API_KEY;
+  window.ENV.MISTRAL_API_KEY = window.MISTRAL_API_KEY;
+  window.ENV.DEFAULT_MISTRAL_API_KEY = window.MISTRAL_API_KEY;
+
+  window.ENV_CONFIG.MISTRAL_API_KEY = window.MISTRAL_API_KEY;
+  window.ENV_CONFIG.DEFAULT_MISTRAL_API_KEY = window.MISTRAL_API_KEY;
+  window.ENV_CONFIG.VITE_MISTRAL_API_KEY = window.MISTRAL_API_KEY;
+  window.ENV_CONFIG.VITE_DEFAULT_MISTRAL_API_KEY = window.MISTRAL_API_KEY;
+  window.ENV_CONFIG.mistral_api_key = window.MISTRAL_API_KEY;
+
+  // Update user settings in localStorage
+  try {
+    const userSettings = JSON.parse(localStorage.getItem('echomind_user_settings') || '{}');
+    userSettings.mistral_api_key = window.MISTRAL_API_KEY;
+    localStorage.setItem('echomind_user_settings', JSON.stringify(userSettings));
+  } catch (e) {
+    console.error('Error updating user settings:', e);
+    // Reset user settings
+    localStorage.setItem('echomind_user_settings', JSON.stringify({
+      use_custom_api_key: false,
+      mistral_api_key: window.MISTRAL_API_KEY,
+      email_notifications: true,
+      reminder_notifications: true
+    }));
+  }
+}
+
 // Log environment configuration for debugging
 console.log('EchoMind environment configuration loaded');
 console.log('Supabase URL:', window.getEnv('SUPABASE_URL'));
 console.log('Mistral API Key available:', !!window.getEnv('MISTRAL_API_KEY'));
+console.log('Is Netlify environment:', window.IS_NETLIFY || false);

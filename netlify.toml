@@ -23,7 +23,7 @@
     X-XSS-Protection = "1; mode=block"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https: https://www.googletagmanager.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://*.supabase.co https://api.mistral.ai https://api-inference.huggingface.co; frame-src 'self'; object-src 'none'; base-uri 'self';"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https: https://www.googletagmanager.com https://images.unsplash.com https://images.weserv.nl; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://*.supabase.co https://api.mistral.ai https://api-inference.huggingface.co https://images.unsplash.com https://images.weserv.nl; frame-src 'self'; object-src 'none'; base-uri 'self';"
     Permissions-Policy = "camera=(), microphone=(), geolocation=(), interest-cohort=()"
 
 # Set cache headers for static assets
@@ -35,6 +35,12 @@
 # Set cache headers for HTML files
 [[headers]]
   for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Don't cache JS fix files to ensure latest fixes are always used
+[[headers]]
+  for = "/*-fix.js"
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
 
