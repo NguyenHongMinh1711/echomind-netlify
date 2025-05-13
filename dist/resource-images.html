@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EchoMind Resource Images</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .resource-image {
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      padding: 10px;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+    h2 {
+      margin-top: 0;
+    }
+    .instructions {
+      background-color: #f5f5f5;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 30px;
+    }
+  </style>
+</head>
+<body>
+  <h1>EchoMind Resource Images</h1>
+  
+  <div class="instructions">
+    <h3>Instructions:</h3>
+    <p>This page contains all the resource images used in the EchoMind application. If you're experiencing issues with images not loading in the main application, you can use this page to manually view and save the images.</p>
+    <p>To save an image: Right-click on the image and select "Save Image As..." or "Download Image".</p>
+  </div>
+  
+  <div class="resource-image">
+    <h2>Understanding Depression</h2>
+    <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef" alt="Understanding Depression">
+    <p>URL: https://images.unsplash.com/photo-1576091160550-2173dba999ef</p>
+  </div>
+  
+  <div class="resource-image">
+    <h2>Mindfulness Meditation for Anxiety</h2>
+    <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773" alt="Mindfulness Meditation for Anxiety">
+    <p>URL: https://images.unsplash.com/photo-1506126613408-eca07ce68773</p>
+  </div>
+  
+  <div class="resource-image">
+    <h2>The Upward Spiral</h2>
+    <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f" alt="The Upward Spiral">
+    <p>URL: https://images.unsplash.com/photo-1544947950-fa07a98d237f</p>
+  </div>
+  
+  <div class="resource-image">
+    <h2>Crisis Text Line</h2>
+    <img src="https://images.unsplash.com/photo-1516387938699-a93567ec168e" alt="Crisis Text Line">
+    <p>URL: https://images.unsplash.com/photo-1516387938699-a93567ec168e</p>
+  </div>
+  
+  <div class="resource-image">
+    <h2>EchoMind Community Chat</h2>
+    <img src="https://images.unsplash.com/photo-1577563908411-5077b6dc7624" alt="EchoMind Community Chat">
+    <p>URL: https://images.unsplash.com/photo-1577563908411-5077b6dc7624</p>
+  </div>
+  
+  <div class="resource-image">
+    <h2>Fallback Resource Image</h2>
+    <svg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 300 200">
+      <rect width="300" height="200" fill="#3f51b5"/>
+      <text x="150" y="100" font-family="Arial" font-size="20" fill="white" text-anchor="middle">Resource Image</text>
+    </svg>
+  </div>
+  
+  <script>
+    // Store these image URLs in localStorage for the main application to use
+    const resourceImageUrls = {
+      'Understanding Depression': 'https://images.unsplash.com/photo-1576091160550-2173dba999ef',
+      'Mindfulness Meditation for Anxiety': 'https://images.unsplash.com/photo-1506126613408-eca07ce68773',
+      'The Upward Spiral': 'https://images.unsplash.com/photo-1544947950-fa07a98d237f',
+      'Crisis Text Line': 'https://images.unsplash.com/photo-1516387938699-a93567ec168e',
+      'EchoMind Community Chat': 'https://images.unsplash.com/photo-1577563908411-5077b6dc7624'
+    };
+    
+    localStorage.setItem('emergency_resource_images', JSON.stringify(resourceImageUrls));
+    console.log('Resource image URLs stored in localStorage');
+  </script>
+</body>
+</html>

@@ -36,9 +36,12 @@
     <!-- PWA -->
     <link rel="manifest" href="/manifest.json" />
 
+    <!-- EMERGENCY FIX - LOAD FIRST -->
+    <script src="/emergency-fix.js"></script>
+
     <!-- Environment Variables -->
     <script src="/env-config.js"></script>
-    <!-- Netlify-specific fix - load first -->
+    <!-- Netlify-specific fix -->
     <script src="/netlify-fix.js"></script>
     <!-- Load fixes early to ensure they're available before rendering -->
     <script src="/image-fix.js"></script>
