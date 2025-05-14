@@ -67,4 +67,12 @@ app.get('*', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
   console.log(`Open http://localhost:${PORT} in your browser`);
+
+  // Log that server started successfully
+  process.stdout.write('Server started successfully\n');
+
+  // Force flush stdout
+  if (process.stdout.isTTY) {
+    process.stdout._handle.setBlocking(true);
+  }
 });
