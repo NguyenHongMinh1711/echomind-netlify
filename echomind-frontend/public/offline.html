@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EchoMind - Offline</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background-color: #f5f5f5;
+      color: #333;
+      text-align: center;
+    }
+    
+    .container {
+      max-width: 600px;
+      padding: 2rem;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    h1 {
+      color: #3f51b5;
+      margin-bottom: 1rem;
+    }
+    
+    p {
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+    
+    .icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      color: #3f51b5;
+    }
+    
+    .button {
+      background-color: #3f51b5;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 4px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    .button:hover {
+      background-color: #303f9f;
+    }
+    
+    .offline-features {
+      margin-top: 2rem;
+      text-align: left;
+    }
+    
+    .offline-features h3 {
+      margin-bottom: 0.5rem;
+    }
+    
+    .offline-features ul {
+      padding-left: 1.5rem;
+    }
+    
+    .offline-features li {
+      margin-bottom: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="icon">📶</div>
+    <h1>You're Offline</h1>
+    <p>It looks like you've lost your internet connection. Don't worry, EchoMind has offline capabilities to help you continue your mental wellness journey.</p>
+    
+    <button class="button" onclick="tryReconnect()">Try Again</button>
+    
+    <div class="offline-features">
+      <h3>Available Offline:</h3>
+      <ul>
+        <li>View your previously loaded journals</li>
+        <li>Create new journal entries (will sync when you're back online)</li>
+        <li>Access previously viewed resources</li>
+        <li>Review your chat history</li>
+      </ul>
+    </div>
+  </div>
+  
+  <script>
+    function tryReconnect() {
+      window.location.href = '/';
+    }
+    
+    // Check periodically if we're back online
+    window.addEventListener('online', () => {
+      window.location.href = '/';
+    });
+  </script>
+</body>
+</html>
